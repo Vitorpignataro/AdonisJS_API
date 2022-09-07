@@ -4,6 +4,8 @@ import Application from "@ioc:Adonis/Core/Application"
 import {v4 as uuidv4} from 'uuid'
 
 import Moment from 'App/Models/Moment'
+// import databaseConfig from 'Config/database'
+// import { Request } from '@adonisjs/core/build/standalone'
 
 export default class MomentsController {
     
@@ -66,6 +68,54 @@ export default class MomentsController {
 
         return{
             data: moment
+        }
+
+    }
+
+    public async destroy({params} :HttpContextContract){
+        const moment = await Moment.findOrFail(params.id)
+
+        await moment.delete();
+
+        return{
+            message: 'Delete realizado com sucesso',
+            return: moment
+        }
+    }
+
+    //faz o update
+    public async update({params, request, response} :HttpContextContract){
+        const body = request.body()
+        const moment = await Moment.findOrFail(params.id)
+
+        moment.tittle = body.tittle
+        moment.description = body.description
+
+        //também está certo
+        // moment.tittle = request.input('name')
+        // moment.description = request.input('description')
+        
+        if(moment.image != body.image || !moment.image){
+            const image = request.file('image', this.validateOptions)
+
+            if(image){
+                const imgName = `${uuidv4()}.${image.extname}`
+                
+                await image.move(Application.tmpPath('uploads'),{
+                    name: imgName
+                })
+
+                moment.image = imgName;
+            }
+        }
+
+        await moment.save()
+
+        response.status(201)
+
+        return{
+            message: 'Dados alterados com sucesso.',
+            return: moment
         }
 
     }
