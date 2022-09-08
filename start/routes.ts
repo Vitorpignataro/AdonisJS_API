@@ -38,6 +38,8 @@ Route.group(() => {
     para uso em api  
   */
   Route.resource('/moments', 'MomentsController').apiOnly()
+
+  Route.resource('/products', 'ProductsController').apiOnly()
   
   Route.get('/comments', 'CommentsController.index')
   Route.post('/moments/:momentId/comments', 'CommentsController.store')
