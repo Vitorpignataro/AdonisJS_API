@@ -64,13 +64,5 @@ export default class CommentsController {
             message: "Atualizado com Sucesso!",
             data: comment
         }
-
-
-
     }
-
-    
-
-
-
 }

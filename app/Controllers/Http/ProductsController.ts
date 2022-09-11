@@ -14,7 +14,6 @@ export default class ProductsController {
             message: "cadastro executado com sucesso",
             data: body
         }
-
     }
 
     //pega todos os casos
@@ -47,6 +46,7 @@ export default class ProductsController {
         }
     }
 
+    //update
     public async update({params, request} :HttpContextContract){
         const body = request.body();
         const product = await Product.findOrFail(params.id)
@@ -60,12 +60,6 @@ export default class ProductsController {
             message: `Produto alterado com sucesso!`,
             data: body
         }
-
-
-
     }
-
-
-    p
 
 }
